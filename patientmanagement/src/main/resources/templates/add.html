@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head><title>Add Patient</title></head>
+<body>
+  <h2>Add Patient</h2>
+  <form onsubmit="add(event)">
+    Name: <input type="text" id="name"><br><br>
+    Age: <input type="number" id="age"><br><br>
+    Gender: <select id="gender">
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select><br><br>
+    Diagnosis: <input type="text" id="diagnosis"><br><br>
+    Date: <input type="date" id="admissionDate"><br><br>
+    Status: <select id="status">
+      <option>Admitted</option>
+      <option>Discharged</option>
+      <option>Under Treatment</option>
+    </select><br><br>
+    <button type="submit">Add</button>
+  </form>
+
+  <script>
+    function add(event) {
+      event.preventDefault();
+      fetch("http://localhost:8080/patients", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          name: document.getElementById("name").value,
+          age: document.getElementById("age").value,
+          gender: document.getElementById("gender").value,
+          diagnosis: document.getElementById("diagnosis").value,
+          admissionDate: document.getElementById("admissionDate").value,
+          status: document.getElementById("status").value
+        })
+      }).then(() => window.location.href = "dashboard.html");
+    }
+  </script>
+</body>
+</html>

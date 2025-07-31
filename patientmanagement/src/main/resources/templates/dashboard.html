@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+  <h2>All Patients</h2>
+  <a href="add.html">Add Patient</a><br><br>
+
+  <table border="1" id="table"></table>
+
+  <script>
+    function load() {
+      fetch("http://localhost:8080/patients")
+        .then(res => res.json())
+        .then(data => {
+          let table = "<tr><th>Name</th><th>Age</th><th>Status</th><th>Actions</th></tr>";
+          data.forEach(p => {
+            table += `<tr>
+              <td>${p.name}</td>
+              <td>${p.age}</td>
+              <td>${p.status}</td>
+              <td>
+                <a href="edit.html?id=${p.id}">Edit</a> |
+                <a href="#" onclick="del(${p.id})">Delete</a>
+              </td>
+            </tr>`;
+          });
+          document.getElementById("table").innerHTML = table;
+        });
+    }
+
+    function del(id) {
+      fetch(`http://localhost:8080/patients/${id}`, { method: "DELETE" })
+        .then(() => load());
+    }
+
+    load();
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register</title>
+</head>
+<body>
+  <h2>Register</h2>
+  <form onsubmit="register(event)">
+    Username: <input type="text" id="username" required><br><br>
+    Password: <input type="password" id="password" required><br><br>
+    <button type="submit">Register</button>
+  </form>
+
+  <p>Already have an account? <a href="login.html">Login here</a></p>
+
+  <script>
+    function register(event) {
+      event.preventDefault();
+
+      const user = {
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value
+      };
+
+      fetch("http://localhost:8080/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user)
+      })
+      .then(res => {
+        if (res.ok) {
+          alert("Registration successful. You can now log in.");
+          window.location.href = "login.html";
+        } else {
+          alert("Registration failed. Try a different username.");
+        }
+      });
+    }
+  </script>
+</body>
+</html>
